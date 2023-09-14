@@ -1,13 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="main.js" defer></script>
-    <link rel="stylesheet" href="styles.css">
-    <title>TicTacToe</title>
-</head>
-<body>
-    
-</body>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="main.js" defer></script>
+        <link rel="stylesheet" href="styles.css">
+        <title>TicTacToe</title>
+    </head>
+
+    <body>
+
+        <div id="container">
+            <div id="hero">
+                <h1>Tic Tac Toe</h1>
+            </div>
+            <div id="main">
+                <div id="round">Round: </div>
+                <div id="gameboard"></div>
+                <div id="players">
+                    <div class="player">
+                        <p class="name" id="player-one-start">Player 1: <p id="player-one"></p></p>
+                        <p class="score">Score: </p>
+                    </div>
+                    <div class="player">
+                        <p class="name" id="player-two-start">Player 2: <p id="player-two"></p></p>
+                        <p class="score">Score: </p>
+                    </div>
+                </div>
+                <div id="dialog-container">
+                    <dialog id="add-player-dialog">
+                        <div>
+                            <form action="" method="dialog">
+                                <p>
+                                    <label for="">
+                                        Player one choose your piece
+                                        <button class="pieces">X</button>
+                                        <button class="pieces">O</button>
+                                    </label>
+                                </p>
+                        </div>
+                            <div>
+                                <button type="button" value="cancel" id="cancel-button">Cancel</button>
+                            </div>
+                        </form>
+                    </dialog>
+                </div>
+            </div>
+            <div id="start">
+                <button>
+                    <p id="start-button">Start</p>
+                </button>
+            </div>
+            <div id="footer">
+                <p> </p>
+            </div>
+        </div>
+
+    </body>
+
 </html>

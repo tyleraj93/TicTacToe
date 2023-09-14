@@ -11,8 +11,6 @@ const gameBoard = (function () {
         }
     }
 
-    console.log(board);
-
     const render = () => {
         let boardHTML = "";
         let counter = 1;

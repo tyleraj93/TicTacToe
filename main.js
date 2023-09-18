@@ -2,29 +2,36 @@ const gameBoard = (function () {
     // Create a 3*3 grid
     const rows = 3;
     const columns = 3;
-    const board = [];
+    const board = Array.from({ length: rows }, () => Array(columns).fill(null));
+    console.log(board);
 
-    for (let i = 0; i < rows; i++) {
-        board[i] = [];
-        for (let j = 0; j < columns; j++) {
-            board[i].push([" ?? "]);
-        }
-    }
-
-    const render = () => {
+    const generateHtml = () => {
         let boardHTML = "";
-        let counter = 1;
-        board.forEach((row, index) => {
-            row.forEach((square) => {
-                boardHTML += `<div class="square" id="square-${counter}">${square}</div>`;
+        let counter = 0;
+        board.forEach((row) => {
+            row.forEach(() => {
+                boardHTML += `<div class="square" id="${counter}"></div>`;
                 counter++;
             });
         });
+        return boardHTML;
+    };
+
+    const render = () => {
+        const boardHTML = generateHtml();
         document.getElementById("gameboard").innerHTML = boardHTML;
+
+        const squares = document.querySelectorAll(".square");
+        squares.forEach((square) => {
+            square.addEventListener("click", () => {
+                Game.handlePlayerMove(square);
+            });
+        });
     };
 
     return {
         render,
+        board,
     };
 })();
 
@@ -54,40 +61,78 @@ pieces.forEach((pieceButton) => {
     pieceButton.addEventListener("click", () => {
         addPlayerDialog.style.display = "none";
         const piece = pieceButton.textContent;
-        playerOneStart.textContent += piece;
-        playerTwoStart.textContent += piece === "X" ? "O" : "X";
-        gameBoard.render();
+        playerOne.textContent += piece;
+        playerTwo.textContent += piece === "X" ? "O" : "X";
+        Game.start();
     });
 });
 
-// const createPlayer = (name, mark) => {
-//     return {
-//         name,
-//         mark
-//     }
-// }
+const createPlayer = (player, mark, score = 0) => {
+    return {
+        player,
+        mark,
+        score,
+    };
+};
 
-// const Game = (() => {
-//     let players = [];
-//     let currentPlayerIndex;
-//     let gameOver;
+const Game = (() => {
+    let players = [];
+    let currentPlayerIndex;
+    let gameOver;
+    const winningCombinations = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+        [0, 4, 8], [2, 4, 6] // Diagonals
+    ];
 
-//     const start = () => {
-//         players = [
-//             createPlayer(document.querySelector("#player1").value, "X"),
-//             createPlayer(document.querySelector("#player2").value, "O")
-//         ]
-//         currentPlayerIndex = 0;
-//         gameOver = false;
-//         Gameboard.render();
-//     }
+    const start = () => {
+        players = [
+            createPlayer(
+                document.getElementById("player-one-start").textContent,
+                document.getElementById("player-one").textContent
+            ),
+            createPlayer(
+                document.getElementById("player-two-start").textContent,
+                document.getElementById("player-two").textContent
+            ),
+        ];
+        currentPlayerIndex = 0;
+        gameOver = false;
+        gameBoard.render();
+    };
 
-//     return {
-//         start,
-//     }
-// })();
+    const switchPlayer = () => {
+        currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
+    };
 
-// const startButton = document.querySelector("#startButton");
-// startButton.addEventListener("click", () => {
-//     Game.start();
-// })
+    function checkForWin(playerMark) {
+        for (const combination in winningCombinations) {
+            if (
+                gameBoard.board[combination[0]] === players[currentPlayerIndex].mark &&
+                gameBoard.board[combination[1]] === players[currentPlayerIndex].mark &&
+                gameBoard.board[combination[2]] === players[currentPlayerIndex].mark
+            ) {
+                console.log("winner")
+                return true;
+            }
+        }
+        return false;
+    }
+
+    const handlePlayerMove = (square) => {
+        if (!square.textContent) {
+            square.textContent =
+                currentPlayerIndex === 0
+                    ? `${players[currentPlayerIndex].mark}`
+                    : `${players[1].mark}`;
+            checkForWin(currentPlayerIndex);
+            switchPlayer();
+        };
+
+    };
+
+    return {
+        start,
+        handlePlayerMove,
+    };
+})();

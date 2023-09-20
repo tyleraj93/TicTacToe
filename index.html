@@ -16,16 +16,16 @@
                 <h1>Tic Tac Toe</h1>
             </div>
             <div id="main">
-                <div id="round">Round: </div>
+                <div id="round-container">Round<p id="round"></p></div>
                 <div id="gameboard"></div>
                 <div id="players">
                     <div class="player">
-                        <p class="name" id="player-one-start">Player 1 <p id="player-one"></p></p>
-                        <p class="score">Score: </p>
+                        <p class="name" id="player-one-start">Player 1<div id="player-one"></div></p>
+                        <p class="score">Score<p id="player-one-score"></p></p>
                     </div>
                     <div class="player">
-                        <p class="name" id="player-two-start">Player 2 <p id="player-two"></p></p>
-                        <p class="score">Score: </p>
+                        <p class="name" id="player-two-start">Player 2<div id="player-two"></div></p>
+                        <p class="score">Score<p id="player-two-score"></p></p>
                     </div>
                 </div>
                 <div id="dialog-container">
@@ -43,6 +43,15 @@
                             <div>
                                 <button type="button" value="cancel" id="cancel-button">Cancel</button>
                             </div>
+                        </form>
+                    </dialog>
+                    <dialog id="winner-dialog">
+                        <form action="">
+                            <p>
+                                <label for="" id="winner-dialog-text">
+
+                                </label>
+                            </p>
                         </form>
                     </dialog>
                 </div>

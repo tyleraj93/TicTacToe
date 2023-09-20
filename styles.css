@@ -1,30 +1,3 @@
-/* #gameboard {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
-    justify-content: center;
-}
-
-.square {
-    display: flex;
-    flex-wrap: wrap;
-    float: left;
-    border: 1px solid black;
-    justify-content: center;
-    align-items: center;
-    width: 25%;
-    height: 30%;
-    text-align: center;
-    font-size: 80px;
-}
-
-#controls, #message {
-    text-align: center;
-    margin: 20px 0;
-} */
-
 * {
     margin: 0;
     padding: 0;
@@ -99,15 +72,20 @@
     padding: 5px 0;
 }
 
-#add-player-dialog {
+dialog {
     display: none;
     width: 300px; /* Adjust the width as needed */
     height: 200px;
     margin: auto auto; /* Horizontally center the dialog */
     text-align: center; /* Center text content */
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
     align-items: center;
     justify-items: center;
 }
 
+#round-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}

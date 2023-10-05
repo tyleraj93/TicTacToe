@@ -1,25 +1,32 @@
 const gameBoard = (function () {
-    const board = new Array(9).fill("")
-    console.log(board);
+    // Creates an empty array to turn into the board
+    const board = new Array(9).fill("");
 
+    // Turns the array into a 3x3 html grid
+    // Each square had a class square for styling and an id for selecting
     const generateHtml = () => {
-        let boardHTML = "";
+        const boardHTML = document.createDocumentFragment();
         board.forEach((_, index) => {
-            boardHTML += `<div class="square" id="${index}"></div>`;
+            const square = document.createElement("div");
+            square.className = "square";
+            square.id = index;
+            boardHTML.appendChild(square);
         });
         return boardHTML;
     };
 
+    // Renders gameboard from the generateHtml function
     const render = () => {
         const gameboardElement = document.querySelector("#gameboard");
         const boardHTML = generateHtml();
-        gameboardElement.innerHTML = boardHTML;
-
-        const squares = gameboardElement.querySelectorAll(".square");
-        squares.forEach((square) => {
-            square.addEventListener("click", () => {
-                Game.handlePlayerMove(square);
-            });
+        gameboardElement.innerHTML = "";
+        gameboardElement.appendChild(boardHTML);
+        // Uses target for each square in the gameboard element instead of
+        // applying handlePlayerMove to each square individually
+        gameboardElement.addEventListener("click", (event) => {
+            if (event.target.classList.contains("square")) {
+                Game.handlePlayerMove(event.target);
+            }
         });
     };
 
@@ -29,6 +36,7 @@ const gameBoard = (function () {
     };
 })();
 
+// Creates each player with an initial score of 0
 const createPlayer = (player, mark, score = 0) => {
     return {
         player,
@@ -60,14 +68,13 @@ const Game = (() => {
             </button>
         `;
 
-    //Dialog box asking what tile player1 wants to use after clicking the start button
-    // will change so that start button starts the flow and modal pops up in game not on button press;
     const startButtonContainer = document.querySelector("#start");
     const startButton = document.getElementById("start-button");
     startButton.addEventListener("click", () => {
         start();
     });
 
+    // Replaces the start button with a restart button after start is pressed
     const replaceWithRestart = () => {
         startButtonContainer.innerHTML = restartButtonText;
         const restartButton = document.querySelector("#restart-button");
@@ -76,6 +83,7 @@ const Game = (() => {
         });
     };
 
+    // Replaces the restart button with a start button after restart is pressed
     const replaceWithStart = () => {
         startButtonContainer.innerHTML = startButtonText;
         const startButton = document.getElementById("start-button");
@@ -84,12 +92,14 @@ const Game = (() => {
         });
     };
 
+    // Cancels the dialog box if user decides to not play the game
     const cancelButton = document.getElementById("cancel-button");
     cancelButton.addEventListener("click", () => {
         addPlayerDialog.style.display = "none";
         addPlayerDialog.close();
     });
 
+    // Assigns either "x" or "o" to player one after they select it
     const pieces = document.querySelectorAll(".pieces");
     pieces.forEach((pieceButton) => {
         pieceButton.addEventListener("click", () => {
@@ -101,6 +111,8 @@ const Game = (() => {
         });
     });
 
+    // Allows players to play more than one round through a dialog
+    // box after the round is over
     const continueButton = document.createElement("button");
     continueButton.innerHTML = "Continue";
     continueButton.addEventListener("click", () => {
@@ -122,6 +134,7 @@ const Game = (() => {
         replaceWithRestart();
     };
 
+    // Sets all scores to 0 and round to 1 to restart the game
     const restart = () => {
         round = 1;
         roundText.innerHTML = "";
@@ -154,6 +167,7 @@ const Game = (() => {
         [2, 4, 6], // Diagonals
     ];
 
+    // Starts game by creating players and calling render from gameBoard
     const startGame = (oneScore = 0, twoScore = 0, startingPlayer = 0) => {
         players = [
             createPlayer(
@@ -168,9 +182,9 @@ const Game = (() => {
             ),
         ];
 
-        playerOneScore.innerHTML = players[0].score;
-        playerTwoScore.innerHTML = players[1].score;
-        roundText.innerHTML = round;
+        playerOneScore.textContent = players[0].score;
+        playerTwoScore.textContent = players[1].score;
+        roundText.textContent = round;
         currentPlayerIndex = startingPlayer;
         gameBoard.render();
     };
@@ -185,6 +199,7 @@ const Game = (() => {
         playerTwoScore.innerHTML = players[1].score;
     };
 
+    // Opens a dialog box to say who the winner of the round is
     const alertPlayer = (message) => {
         winnerDialog.style.display = "grid";
         while (winnerDialog.lastChild) {
